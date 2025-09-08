@@ -1,23 +1,70 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useState, ChangeEvent } from 'react'; // ReactのuseStateフックをインポート
 
 function App() {
+  // ロゴ表示状態を管理するstate。初期値はtrue（表示）
+  const [showLogo, setShowLogo] = useState<boolean>(true);
+  // ロゴの回転速度（秒）を管理するstate。初期値は20秒
+  const [speed, setSpeed] = useState<number>(20);
+  const handleSpeedChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setSpeed(Number(e.target.value));
+  };
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {/* ロゴ表示/Hello world!切り替えボタン */}
+        <button onClick={() => setShowLogo(!showLogo)}>
+          表示切り替え
+        </button>
+        {/* showLogoがtrueならロゴとスライダー等を表示、falseならHello world!を表示 */}
+        {/* showLogoがtrueならロゴとスライダー等を表示、falseならHello world!を表示 */}
+        {showLogo ? (
+          <>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              {/* ロゴ画像。animationDurationで回転速度を変更 */}
+              <img
+                src={logo}
+                className="App-logo"
+                alt="logo"
+                style={{ animationDuration: `${speed}s` }}
+              />
+              {/* 回転速度を変更するスライダー */}
+              <input
+                type="range"
+                min="1"
+                max="40"
+                value={speed}
+                onChange={handleSpeedChange}
+              />
+              {/* 現在の回転速度（秒）を表示 */}
+              <span>{speed}s</span>
+            </div>
+            {/* 編集案内テキスト */}
+            <p>
+              Edit <code>src/App.tsx</code> and save to reload.
+            </p>
+            {/* React公式サイトへのリンク */}
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn React V3
+            </a>
+          </>
+        ) : (
+          // showLogoがfalseならHello world!とS3画像を表示
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <h1>Hello world!</h1>
+            <img
+              src="https://smarthouse-images-dev-577885025359.s3.ap-northeast-1.amazonaws.com/houses/house-001/1756974283923.png"
+              alt="S3画像"
+              style={{ height: '80px' }}
+            />
+          </div>)}
       </header>
     </div>
   );
