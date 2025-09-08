@@ -2,6 +2,11 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { useState, ChangeEvent } from 'react'; // ReactのuseStateフックをインポート
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import outputs from "amplify_outputs.json";
+import { Amplify } from 'aws-amplify';
+
 
 function App() {
   // ロゴ表示状態を管理するstate。初期値はtrue（表示）
