@@ -18,12 +18,12 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "typescript": "4.9.5"
   },
   "scripts": {
-    "prebuild": "cp amplify_outputs.json src/amplify_outputs.json",
     "start": "react-scripts start",
-    "build": "npm run prebuild && react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -51,7 +51,6 @@
     "aws-cdk-lib": "^2.204.0",
     "constructs": "^10.4.2",
     "esbuild": "^0.25.9",
-    "tsx": "^4.20.5",
-    "typescript": "4.9.5"
+    "tsx": "^4.20.5"
   }
 }
