@@ -5,6 +5,8 @@ import { useState, ChangeEvent } from 'react'; // ReactのuseStateフックを�
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { Amplify } from 'aws-amplify';
+import { I18n } from '@aws-amplify/core';
+import { translations } from '@aws-amplify/ui-react';
 
 // Try to import amplify_outputs.json, fallback to environment variables if not available
 let outputs;
@@ -28,8 +30,6 @@ try {
     }
   };
 }
-import { I18n } from '@aws-amplify/core';
-import { translations } from '@aws-amplify/ui-react';
 I18n.putVocabularies(translations);
 I18n.setLanguage('ja');
 I18n.putVocabularies({
