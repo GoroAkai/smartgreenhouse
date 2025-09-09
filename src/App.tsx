@@ -1,7 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { useState, ChangeEvent } from 'react'; // ReactのuseStateフックをインポート
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { Amplify } from 'aws-amplify';
@@ -49,14 +47,16 @@ Amplify.configure(outputs);
 
 export default function App() {
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <main>
-          <h1>こんにちは {user?.username}</h1>
-          <button onClick={signOut}>サインアウト</button>
-        </main>
-      )}
-    </Authenticator>
+    <div className="auth-container">
+      <Authenticator>
+        {({ signOut, user }) => (
+          <main className="main-content">
+            <h1>こんにちは {user?.username}</h1>
+            <button onClick={signOut}>サインアウト</button>
+          </main>
+        )}
+      </Authenticator>
+    </div>
   );
 }
 // function App() {
