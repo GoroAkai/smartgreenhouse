@@ -4,8 +4,30 @@ import './App.css';
 import { useState, ChangeEvent } from 'react'; // ReactのuseStateフックをインポート
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import outputs from "./amplify_outputs.json";
 import { Amplify } from 'aws-amplify';
+
+// Try to import amplify_outputs.json, fallback to environment variables if not available
+let outputs;
+try {
+  outputs = require("./amplify_outputs.json");
+} catch (error) {
+  // Fallback configuration for production deployment
+  outputs = {
+    auth: {
+      user_pool_id: process.env.REACT_APP_USER_POOL_ID,
+      aws_region: process.env.REACT_APP_AWS_REGION || 'ap-northeast-1',
+      user_pool_client_id: process.env.REACT_APP_USER_POOL_CLIENT_ID,
+      identity_pool_id: process.env.REACT_APP_IDENTITY_POOL_ID,
+      // Add other necessary configuration
+    },
+    data: {
+      url: process.env.REACT_APP_GRAPHQL_URL,
+      aws_region: process.env.REACT_APP_AWS_REGION || 'ap-northeast-1',
+      default_authorization_type: "AWS_IAM",
+      authorization_types: ["AMAZON_COGNITO_USER_POOLS"]
+    }
+  };
+}
 import { I18n } from '@aws-amplify/core';
 import { translations } from '@aws-amplify/ui-react';
 I18n.putVocabularies(translations);
