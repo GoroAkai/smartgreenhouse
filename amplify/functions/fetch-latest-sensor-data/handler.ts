@@ -1,33 +1,62 @@
-import { generateClient } from 'aws-amplify/data';
-import { getAmplifyDataClientConfig } from '@aws-amplify/backend/function/runtime';
-import { env } from '$amplify/env/fetch-latest-sensor-data';
-import { Amplify } from 'aws-amplify';
-import { type Schema } from '../../data/resource';
+import type { Handler } from 'aws-lambda';
 
-export const handler = async () => {
-  // AppSyncクライアントの構成を取得
-  const { resourceConfig, libraryOptions } = await getAmplifyDataClientConfig(env);
-  Amplify.configure(resourceConfig, libraryOptions);
+export const handler: Handler = async (event) => {
+  try {
+    console.log('Lambda function executed - DynamoDB change detection');
+    console.log('Event:', JSON.stringify(event, null, 2));
 
-  const client = generateClient<Schema>();
+    console.log('Environment variables:', {
+      AWS_REGION: process.env.AWS_REGION,
+      SENSOR_DATA_TABLE_NAME: process.env.SENSOR_DATA_TABLE_NAME,
+      USER_GREENHOUSES_TABLE_NAME: process.env.USER_GREENHOUSES_TABLE_NAME
+    });
 
-  // 書き込むセンサーデータ（例）
-  const result = await client.models.SensorData.create({
-    sensorId: 'sensor-001',
-    timestampGreenhouseKey: '2025-09-10#GH01',
-    timestamp: new Date().toISOString(),
-    greenhouseId: 'GH01',
-    sensorType: 'soil',
-    temperature: 23.5,
-    moisture: 45.2,
-    ec: 1.8,
-    co2: 400,
-    solarlight: 1200,
-  });
+    // 基本的な処理のログ
+    console.log('Processing DynamoDB change event...');
 
-  console.log('SensorData created:', result);
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: 'SensorData written successfully' }),
-  };
+    // イベントの種類を判定
+    let eventType = 'unknown';
+    if (event.httpMethod) {
+      eventType = 'http';
+    } else if (event.Records) {
+      eventType = 'dynamodb-stream';
+    } else if (event.source) {
+      eventType = event.source;
+    }
+
+    console.log('Event type detected:', eventType);
+
+    // 簡単なデータ処理のシミュレーション
+    const processedData = {
+      timestamp: new Date().toISOString(),
+      eventType: eventType,
+      recordCount: event.Records ? event.Records.length : 0,
+      message: 'DynamoDB change processed successfully'
+    };
+
+    console.log('Processed data:', processedData);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: 'Lambda function executed successfully',
+        data: processedData,
+        environment: {
+          region: process.env.AWS_REGION,
+          sensorDataTableName: process.env.SENSOR_DATA_TABLE_NAME,
+          userGreenhousesTableName: process.env.USER_GREENHOUSES_TABLE_NAME
+        }
+      }),
+    };
+  } catch (error) {
+    console.error('Error in Lambda function:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: 'Error processing request',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString()
+      }),
+    };
+  }
 };

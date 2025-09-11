@@ -23,7 +23,8 @@ const schema = a.schema({
       solarlight: a.float(),  // 太陽光
     })
     .identifier(['sensorId', 'timestampGreenhouseKey'])  // 複合主キー（sensorId + houseName）
-    .authorization((allow) => [allow.authenticated('identityPool')]),
+    // .authorization((allow) => [allow.authenticated('identityPool')]),
+    .authorization((allow) => [allow.guest()]),
 
   UserGreenhouses: a
     .model({
@@ -33,16 +34,15 @@ const schema = a.schema({
       createdAt: a.datetime(),
     })
     .identifier(['userId', 'greenhouseId'])
-    .authorization((allow) => [allow.authenticated('identityPool')]),
-
+    // .authorization((allow) => [allow.authenticated('identityPool')]),
+    .authorization((allow) => [allow.guest()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
-  name: "SoilSensorDataApi", // AppSyncやDynamoDBの識別名
   authorizationModes: {
-    defaultAuthorizationMode: 'identityPool',
+    defaultAuthorizationMode: "userPool",
   },
 });
 
