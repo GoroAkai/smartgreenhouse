@@ -12,6 +12,18 @@ export const backend = defineBackend({
   data,
   fetchLatestSensorData,
 });
+const { cfnUserPool } = backend.auth.resources.cfnResources;
+
+// パスワードポリシーを変更
+cfnUserPool.policies = {
+  passwordPolicy: {
+    minimumLength: 8,
+    requireLowercase: true,
+    requireNumbers: true,
+    requireSymbols: false,
+    requireUppercase: true,
+  },
+};
 
 // Lambda関数にテーブル名を環境変数として渡す
 const sensorDataTable = backend.data.resources.tables["SensorData"];
