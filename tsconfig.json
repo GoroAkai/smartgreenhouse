@@ -8,6 +8,10 @@
     ],
     "module": "esnext",
     "jsx": "react-jsx",
+    "types": [
+      "react",
+      "react-dom"
+    ],
     "allowJs": true,
     "strict": true,
     "resolveJsonModule": true,
