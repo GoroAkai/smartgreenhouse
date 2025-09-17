@@ -21,7 +21,7 @@ const SensorDashboard = () => {
     return (
         <Box p={6}>
             <Heading mb={4}>{greenhouse.name} のセンサー一覧</Heading>
-            <SimpleGrid columns={[1, 2, 3]} spacing={4}>
+            <SimpleGrid columns={[1, 2, 3]} gap={4}>
                 {dummySensors.soil?.temperature && (
                     <SensorCard label="土壌温度" reading={dummySensors.soil.temperature} />
                 )}

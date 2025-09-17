@@ -17,7 +17,7 @@ const GreenhouseSetup = () => {
     };
 
     return (
-        <VStack spacing={4} mt={10}>
+        <VStack spacing="4px" mt={10}>
             <Input
                 placeholder="温室の名前を入力"
                 value={name}
