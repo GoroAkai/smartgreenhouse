@@ -11,8 +11,7 @@
     "types": [
       "react",
       "react-dom",
-      "node",
-      "vitest/globals"
+      "node"
     ],
     "allowJs": true,
     "strict": true,
@@ -26,14 +25,12 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "bundler",
   },
-  "include": [
-    "src",
-    "vite.config.ts",
-    "test-setup.ts"
+  "exclude": [
+    "node_modules",
+    "dist"
   ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
+  "include": [
+    "src"
+  ],
+  "references": []
 }
