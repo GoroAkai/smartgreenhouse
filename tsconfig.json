@@ -10,7 +10,8 @@
     "jsx": "react-jsx",
     "types": [
       "react",
-      "react-dom"
+      "react-dom",
+      "node"
     ],
     "allowJs": true,
     "strict": true,
