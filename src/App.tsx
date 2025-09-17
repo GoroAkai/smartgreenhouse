@@ -21,9 +21,6 @@ I18n.putVocabularies({
   },
 });
 export function App() {
-  // const [user, setUser] = useState<any>(null);
-  // const [loading, setLoading] = useState(true);
-
   return (
     <div className="auth-wrapper">
       <Authenticator>
