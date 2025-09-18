@@ -17,13 +17,18 @@ const GreenhouseSetup = () => {
     };
 
     return (
-        <VStack spacing="4px" mt={10}>
+        <VStack gap={10} mt={10}>
             <Input
+                width="70%"
+                maxWidth={600}
                 placeholder="温室の名前を入力"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
             />
-            <Button onClick={handleRegister} colorScheme="teal">
+            <Button onClick={handleRegister}
+                colorScheme="teal"
+                disabled={name.trim() === ''}
+            >
                 登録してセンサー一覧へ
             </Button>
         </VStack>

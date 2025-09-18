@@ -8,14 +8,16 @@ const SensorDashboard = () => {
     const greenhouse = location.state?.greenhouse as Greenhouse;
 
     // TODO: DynamoDBからセンサー値を取得する処理を追加
+    let currentTime = new Date();
+    let currentTimeIso = currentTime.toISOString();
     const dummySensors = greenhouse.sensors ?? {
         soil: {
-            temperature: { type: 'soil', value: 22.5, unit: '°C', timestamp: '...' },
-            moisture: { type: 'soil', value: 45, unit: '%', timestamp: '...' },
-            conductivity: { type: 'soil', value: 1.2, unit: 'mS/cm', timestamp: '...' },
+            temperature: { type: 'soil', value: 22.5, unit: '°C', timestamp: currentTimeIso },
+            moisture: { type: 'soil', value: 45, unit: '%', timestamp: currentTimeIso },
+            conductivity: { type: 'soil', value: 1.2, unit: 'mS/cm', timestamp: currentTimeIso },
         },
-        co2: { type: 'co2', value: 800, unit: 'ppm', timestamp: '...' },
-        sunlight: { type: 'sunlight', value: 300, unit: 'W/m²', timestamp: '...' },
+        co2: { type: 'co2', value: 800, unit: 'ppm', timestamp: currentTimeIso },
+        sunlight: { type: 'sunlight', value: 300, unit: 'W/m²', timestamp: currentTimeIso },
     };
 
     return (
