@@ -1,7 +1,8 @@
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
-import { data } from './data/resource';
-import { fetchLatestSensorData } from './functions/fetch-latest-sensor-data/resource';
+import { data as sensorData } from './data/SensorData/resource';
+import { data as userGreenhouses } from './data/UserGreenhouses/resource';
+// import { fetchLatestSensorData } from './functions/fetch-latest-sensor-data/resource';
 
 
 /**
@@ -9,8 +10,11 @@ import { fetchLatestSensorData } from './functions/fetch-latest-sensor-data/reso
  */
 export const backend = defineBackend({
   auth,
-  data,
-  fetchLatestSensorData,
+  data: {
+    ...sensorData,
+    ...userGreenhouses,
+  },
+  // fetchLatestSensorData,
 });
 const { cfnUserPool } = backend.auth.resources.cfnResources;
 
@@ -28,7 +32,9 @@ cfnUserPool.policies = {
 // Lambda関数にテーブル名を環境変数として渡す
 const sensorDataTable = backend.data.resources.tables["SensorData"];
 const userGreenhousesTable = backend.data.resources.tables["UserGreenhouses"];
+console.log("SensorData Table Name:", sensorDataTable.tableName);
+console.log("UserGreenhouses Table Name:", userGreenhousesTable.tableName);
 
 // 複数のテーブル名を環境変数として設定
-backend.fetchLatestSensorData.addEnvironment("SENSOR_DATA_TABLE_NAME", sensorDataTable.tableName);
-backend.fetchLatestSensorData.addEnvironment("USER_GREENHOUSES_TABLE_NAME", userGreenhousesTable.tableName);
+// backend.fetchLatestSensorData.addEnvironment("SENSOR_DATA_TABLE_NAME", sensorDataTable.tableName);
+// backend.fetchLatestSensorData.addEnvironment("USER_GREENHOUSES_TABLE_NAME", userGreenhousesTable.tableName);
