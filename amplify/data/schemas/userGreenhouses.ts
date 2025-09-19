@@ -8,7 +8,4 @@ export const userGreenhousesModel = a
         createdAt: a.datetime(),
     })
     .identifier(['userId', 'greenhouseId'])
-    .secondaryIndexes((index) => [
-        index('userId').sortKeys(['greenhouseId']).name('byUserAndGreenhouse'),
-    ])
-    .authorization((allow) => [allow.authenticated()]);
+    .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]);

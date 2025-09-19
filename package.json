@@ -22,7 +22,9 @@
     "dev": "vite",
     "build": "tsc --noEmit --skipLibCheck && vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "deploy": "npx ampx deploy",
+    "sandbox": "npx ampx sandbox"
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.16.1",
