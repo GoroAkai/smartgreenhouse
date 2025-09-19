@@ -5,7 +5,7 @@ export const userGreenhousesModel = a
         userId: a.string().required(),
         greenhouseId: a.string().required(),
         greenhouseName: a.string(),
-        createdAt: a.timestamp(),
+        createdAt: a.datetime(),
     })
     .identifier(['userId', 'greenhouseId'])
     .secondaryIndexes((index) => [

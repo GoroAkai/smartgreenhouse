@@ -24,12 +24,8 @@ cfnUserPool.policies = {
   },
 };
 
-// Lambda関数にテーブル名を環境変数として渡す
-const sensorDataTable = backend.data.resources.tables["SensorData"];
-const userGreenhousesTable = backend.data.resources.tables["UserGreenhouses"];
-console.log("SensorData Table Name:", sensorDataTable.tableName);
-console.log("UserGreenhouses Table Name:", userGreenhousesTable.tableName);
-
-// 複数のテーブル名を環境変数として設定
+// Lambda関数にテーブル名を環境変数として渡す（後で使用）
+// const sensorDataTable = backend.data.resources.tables["SensorData"];
+// const userGreenhousesTable = backend.data.resources.tables["UserGreenhouses"];
 // backend.fetchLatestSensorData.addEnvironment("SENSOR_DATA_TABLE_NAME", sensorDataTable.tableName);
 // backend.fetchLatestSensorData.addEnvironment("USER_GREENHOUSES_TABLE_NAME", userGreenhousesTable.tableName);
