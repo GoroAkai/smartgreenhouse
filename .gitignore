@@ -26,3 +26,4 @@ yarn-error.log*
 .amplify
 # amplify_outputs*  # Commented out to allow committing the file
 # amplifyconfiguration*  # Commented out to allow committing the file
+package - コピー.json
