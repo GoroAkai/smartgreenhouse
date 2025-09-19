@@ -1,19 +1,14 @@
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
-import { data as sensorData } from './data/SensorData/resource';
-import { data as userGreenhouses } from './data/UserGreenhouses/resource';
+import { data } from './data/resource';
 // import { fetchLatestSensorData } from './functions/fetch-latest-sensor-data/resource';
-
 
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
  */
 export const backend = defineBackend({
   auth,
-  data: {
-    ...sensorData,
-    ...userGreenhouses,
-  },
+  data,
   // fetchLatestSensorData,
 });
 const { cfnUserPool } = backend.auth.resources.cfnResources;
