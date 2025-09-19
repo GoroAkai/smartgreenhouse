@@ -19,6 +19,7 @@ I18n.putVocabularies({
     'Your passwords must match': 'パスワードが一致しません',
     'Incorrect username or password.': 'ユーザー名またはパスワードが正しくありません',
     'Enter your email': 'メールアドレスを入力してください',
+    'Invalid verification code provided, please try again.': '無効な確認コードです。もう一度お試しください。',
   },
 });
 
