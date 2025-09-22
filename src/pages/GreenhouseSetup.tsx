@@ -24,6 +24,10 @@ interface Greenhouse {
     greenhouseName?: string | null;
     createdAt?: string | null;
     updatedAt?: string;
+    soilSensors?: string[] | null;
+    co2Sensors?: string[] | null;
+    solarSensors?: string[] | null;
+
 }
 
 const GreenhouseSetup = () => {
