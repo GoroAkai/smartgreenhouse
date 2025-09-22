@@ -1,10 +1,15 @@
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { deleteUser } from 'aws-amplify/auth';
+import { Amplify } from 'aws-amplify';
+import outputs from '../amplify_outputs.json';
 import './App.css';
 import { I18n } from '@aws-amplify/core';
 import { translations } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
+
+// Amplifyの設定
+Amplify.configure(outputs);
 
 
 I18n.putVocabularies(translations);
