@@ -1,19 +1,13 @@
-import { defineData } from '@aws-amplify/backend';
+import { a } from '@aws-amplify/backend';
+export const userGreenhousesModel = a.model({
+    userId: a.string().required(),
+    greenhouseId: a.string().required(),
+    greenhouseName: a.string(),
+    createdAt: a.datetime(),
+    soilSensors: a.string().array(),
+    co2Sensors: a.string().array(),
+    solarSensors: a.string().array(),
+})
+    .identifier(['userId', 'greenhouseId'])
+    .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]);
 
-export const data = defineData({
-    UserGreenhouses: (model) =>
-        model
-            .identifier(['userId', 'greenhouseId'])
-            .fields({
-                userId: model.string().required(),
-                greenhouseId: model.string().required(),
-                greenhouseName: model.string(),
-                createdAt: model.datetime(),
-
-                // 正しい配列型の定義
-                soilSensors: model.listOf(model.string()),
-                co2Sensors: model.listOf(model.string()),
-                solarSensors: model.listOf(model.string()),
-            })
-            .authorization((allow) => [allow.authenticated()]),
-});
