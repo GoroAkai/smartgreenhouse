@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "ap-northeast-1_NhF6MJlYZ",
+    "user_pool_id": "ap-northeast-1_C87vwprMr",
     "aws_region": "ap-northeast-1",
-    "user_pool_client_id": "64ub2qj7tk8fb0paar47tj4jkv",
-    "identity_pool_id": "ap-northeast-1:1ac95836-e88b-4adc-9e31-530eeab65637",
+    "user_pool_client_id": "1umes4bk9gis2lvl7dvhltv7i6",
+    "identity_pool_id": "ap-northeast-1:c704bdef-7d3f-415f-8f4c-7c067413052f",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -26,9 +26,9 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://wpxirrobrbazdg6nphbruqn3by.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+    "url": "https://dvlgz6upqzaopbj2gddh22t5ca.appsync-api.ap-northeast-1.amazonaws.com/graphql",
     "aws_region": "ap-northeast-1",
-    "api_key": "da2-mvjwekxrmve5tio43lpxja56qy",
+    "api_key": "da2-dtmgwqiboralbmpdxlpjkd5pjy",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
       "API_KEY",
@@ -42,13 +42,6 @@
           "fields": {
             "sensorId": {
               "name": "sensorId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "timestampGreenhouseKey": {
-              "name": "timestampGreenhouseKey",
               "isArray": false,
               "type": "String",
               "isRequired": true,
@@ -139,7 +132,7 @@
               "properties": {
                 "fields": [
                   "sensorId",
-                  "timestampGreenhouseKey"
+                  "timestamp"
                 ]
               }
             },
@@ -174,7 +167,7 @@
             "isCustomPrimaryKey": true,
             "primaryKeyFieldName": "sensorId",
             "sortKeyFieldNames": [
-              "timestampGreenhouseKey"
+              "timestamp"
             ]
           }
         },
@@ -208,6 +201,30 @@
               "type": "AWSDateTime",
               "isRequired": false,
               "attributes": []
+            },
+            "soilSensors": {
+              "name": "soilSensors",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
+            "co2Sensors": {
+              "name": "co2Sensors",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
+            "solarSensors": {
+              "name": "solarSensors",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
             },
             "updatedAt": {
               "name": "updatedAt",
