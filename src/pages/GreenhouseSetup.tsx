@@ -8,27 +8,16 @@ import {
     Text,
     Stack,
     Spinner,
-    Alert,
     Heading
 } from '@chakra-ui/react';
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
 import type { Schema } from '../../amplify/data/resource';
 import { v4 as uuidv4 } from 'uuid';
-
 const client = generateClient<Schema>();
 
-interface Greenhouse {
-    userId: string;
-    greenhouseId: string;
-    greenhouseName?: string | null;
-    createdAt?: string | null;
-    updatedAt?: string;
-    soilSensors?: string[] | null;
-    co2Sensors?: string[] | null;
-    solarSensors?: string[] | null;
-
-}
+// Amplify生成型を使用
+type Greenhouse = Schema['UserGreenhouses']['type'];
 
 const GreenhouseSetup = () => {
     const [name, setName] = useState('');
@@ -63,7 +52,7 @@ const GreenhouseSetup = () => {
 
                 // nullや無効なデータをフィルタリング
                 const validGreenhouses = (userGreenhouses || []).filter(
-                    (greenhouse): greenhouse is Greenhouse => {
+                    (greenhouse): greenhouse is NonNullable<typeof greenhouse> => {
                         const isValid = greenhouse !== null &&
                             greenhouse !== undefined &&
                             typeof greenhouse.userId === 'string' &&
@@ -74,7 +63,7 @@ const GreenhouseSetup = () => {
                         }
                         return isValid;
                     }
-                );
+                ) as Greenhouse[];
 
                 console.log('フィルタリング後のデータ:', validGreenhouses);
 
