@@ -81,7 +81,7 @@ const SensorDataChart: React.FC<SensorDataChartProps> = ({
     const formattedData = formatChartData(chartData);
 
     return (
-        <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && onClose()} size="4xl">
+        <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && onClose()} size="xl">
             <DialogBackdrop />
             <DialogContent>
                 <DialogHeader>
