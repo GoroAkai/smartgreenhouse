@@ -1,4 +1,9 @@
 version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - echo "Backend build handled automatically by Amplify Gen2"
 frontend:
   phases:
     preBuild:
