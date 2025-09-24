@@ -296,14 +296,16 @@ const SensorDashboard = () => {
                     greenhouseId: greenhouse.id,
                     sensorName: newName,
                     sensorType: sensorData.find(s => s.sensorId === sensorId)?.sensorType || 'unknown',
+                    description: null,
+                    location: null,
                     isActive: true
-                };
+                } as any; // 型エラーを回避
             newMap.set(sensorId, updatedInfo);
             console.log('更新後のsensorInfoMap:', Array.from(newMap.entries()));
 
             // ローカルストレージにも保存
             try {
-                const sensorNamesObj = {};
+                const sensorNamesObj: Record<string, any> = {};
                 newMap.forEach((value, key) => {
                     sensorNamesObj[key] = value;
                 });
@@ -386,7 +388,7 @@ const SensorDashboard = () => {
                             fontSize="2xl"
                             fontWeight="bold"
                             maxW="400px"
-                            isDisabled={nameUpdateLoading}
+                            disabled={nameUpdateLoading}
                         />
                         <Text fontSize="2xl" fontWeight="bold">のセンサー一覧</Text>
                         {nameUpdateLoading && <Spinner size="sm" />}
