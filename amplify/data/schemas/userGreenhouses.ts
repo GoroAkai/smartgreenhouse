@@ -7,6 +7,7 @@ export const userGreenhousesModel = a.model({
     soilSensors: a.string().array(),
     co2Sensors: a.string().array(),
     solarSensors: a.string().array(),
+    updatedAt: a.datetime(),  // 名前の変更などで更新される可能性あり
 })
     .identifier(['userId', 'greenhouseId'])
     .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]);

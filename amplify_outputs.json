@@ -108,14 +108,16 @@
               "isArray": false,
               "type": "AWSDateTime",
               "isRequired": false,
-              "attributes": []
+              "attributes": [],
+              "isReadOnly": true
             },
             "updatedAt": {
               "name": "updatedAt",
               "isArray": false,
               "type": "AWSDateTime",
               "isRequired": false,
-              "attributes": []
+              "attributes": [],
+              "isReadOnly": true
             }
           },
           "syncable": true,
@@ -130,6 +132,28 @@
               "properties": {
                 "fields": [
                   "sensorId",
+                  "timestamp"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "bySensorIdAndTimestamp",
+                "queryField": "listSensorDataBySensorIdAndTimestamp",
+                "fields": [
+                  "sensorId",
+                  "timestamp"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "byGreenhouseIdAndTimestamp",
+                "queryField": "listSensorDataByGreenhouseIdAndTimestamp",
+                "fields": [
+                  "greenhouseId",
                   "timestamp"
                 ]
               }
@@ -229,8 +253,7 @@
               "isArray": false,
               "type": "AWSDateTime",
               "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
+              "attributes": []
             }
           },
           "syncable": true,

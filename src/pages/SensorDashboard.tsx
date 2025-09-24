@@ -73,33 +73,48 @@ const SensorDashboard = () => {
                     return;
                 }
 
-                // 各センサーIDの最新データを取得
+                // 各センサーIDの最新データを効率的に取得
                 const sensorDataPromises = allSensorIds.map(async (sensorId) => {
                     try {
-                        // SensorDataテーブルから特定のsensorIdの全データを取得
-                        const { data: sensorReadings } = await client.models.SensorData.list({
+                        // GSIを使用してセンサーIDで検索し、timestampで降順ソートして最新の1件のみ取得
+                        const { data: sensorReadings } = await client.models.SensorData.listSensorDataBySensorIdAndTimestamp({
+                            sensorId: sensorId,
+                            sortDirection: 'DESC',
+                            limit: 1,
                             filter: {
-                                sensorId: { eq: sensorId },
                                 greenhouseId: { eq: greenhouse.id }
                             }
                         });
 
-                        if (!sensorReadings || sensorReadings.length === 0) {
-                            return null;
-                        }
-
-                        // timestampで降順ソートして最新のデータを取得
-                        const sortedReadings = sensorReadings
-                            .filter(reading => reading && reading.timestamp)
-                            .sort((a, b) => {
-                                const dateA = new Date(a.timestamp);
-                                const dateB = new Date(b.timestamp);
-                                return dateB.getTime() - dateA.getTime(); // 降順ソート
+                        return sensorReadings?.[0] || null;
+                    } catch (error) {
+                        // GSIが利用できない場合は従来の方法にフォールバック
+                        try {
+                            const { data: sensorReadings } = await client.models.SensorData.list({
+                                filter: {
+                                    sensorId: { eq: sensorId },
+                                    greenhouseId: { eq: greenhouse.id }
+                                },
+                                limit: 10 // 最大10件に制限
                             });
 
-                        return sortedReadings[0] || null;
-                    } catch (error) {
-                        return null;
+                            if (!sensorReadings || sensorReadings.length === 0) {
+                                return null;
+                            }
+
+                            // timestampで降順ソートして最新のデータを取得
+                            const sortedReadings = sensorReadings
+                                .filter(reading => reading && reading.timestamp)
+                                .sort((a, b) => {
+                                    const dateA = new Date(a.timestamp);
+                                    const dateB = new Date(b.timestamp);
+                                    return dateB.getTime() - dateA.getTime();
+                                });
+
+                            return sortedReadings[0] || null;
+                        } catch (fallbackError) {
+                            return null;
+                        }
                     }
                 });
 

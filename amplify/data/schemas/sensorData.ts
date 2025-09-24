@@ -11,11 +11,18 @@ export const sensorDataModel = a
         ec: a.float(),
         co2: a.float(),
         solar: a.float(),
-        // 既存データとの互換性のため、createdAt/updatedAtをnullableで定義
-        createdAt: a.datetime(),
-        updatedAt: a.datetime(),
     })
     .identifier(['sensorId', 'timestamp'])
+    .secondaryIndexes((index) => [
+        // センサーIDで最新データを効率的に取得するためのGSI
+        index('sensorId')
+            .sortKeys(['timestamp'])
+            .name('bySensorIdAndTimestamp'),
+        // 温室IDで最新データを効率的に取得するためのGSI
+        index('greenhouseId')
+            .sortKeys(['timestamp'])
+            .name('byGreenhouseIdAndTimestamp'),
+    ])
     .authorization((allow) => [
         allow.publicApiKey(),
         allow.authenticated()
