@@ -6,11 +6,14 @@ export const sensorDataModel = a
         timestamp: a.string().required(),
         greenhouseId: a.string().required(),
         sensorType: a.string().required(),
-        temperature: a.float().required(),
-        moisture: a.float().required(),
-        ec: a.float().required(),
+        temperature: a.float(),
+        moisture: a.float(),
+        ec: a.float(),
         co2: a.float(),
-        solarlight: a.float(),
+        solar: a.float(),
     })
     .identifier(['sensorId', 'timestamp'])
-    .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]);
+    .authorization((allow) => [
+        allow.publicApiKey(),
+        allow.authenticated()
+    ]);
