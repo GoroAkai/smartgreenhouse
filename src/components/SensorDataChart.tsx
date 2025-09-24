@@ -20,7 +20,7 @@ import {
     Tooltip,
     ResponsiveContainer
 } from 'recharts';
-import { type Schema } from '../../amplify/data/resources';
+import { type Schema } from '../../amplify/data/resource';
 
 type SensorData = Schema['SensorData']['type'];
 

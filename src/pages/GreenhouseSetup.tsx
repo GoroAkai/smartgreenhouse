@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
-import type { Schema } from '../../amplify/data/resources';
+import type { Schema } from '../../amplify/data/resource';
 import { v4 as uuidv4 } from 'uuid';
 import { toJSTISOString } from '../utils/uty';
 
