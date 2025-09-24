@@ -252,8 +252,8 @@ const SensorDashboard = () => {
 
     // センサー名更新関数
     const updateSensorName = async (sensorId: string, newName: string) => {
-        // SensorInfoテーブルが存在するかチェック
-        const sensorInfoExists = client.models.SensorInfo !== undefined;
+        // SensorInfoテーブルが存在するかチェック（一時的に無効化）
+        const sensorInfoExists = false; // client.models.SensorInfo !== undefined;
 
         if (sensorInfoExists) {
             try {
