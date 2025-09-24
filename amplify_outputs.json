@@ -72,21 +72,21 @@
               "name": "temperature",
               "isArray": false,
               "type": "Float",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
             "moisture": {
               "name": "moisture",
               "isArray": false,
               "type": "Float",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
             "ec": {
               "name": "ec",
               "isArray": false,
               "type": "Float",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
             "co2": {
@@ -96,8 +96,8 @@
               "isRequired": false,
               "attributes": []
             },
-            "solarlight": {
-              "name": "solarlight",
+            "solar": {
+              "name": "solar",
               "isArray": false,
               "type": "Float",
               "isRequired": false,
@@ -108,16 +108,14 @@
               "isArray": false,
               "type": "AWSDateTime",
               "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
+              "attributes": []
             },
             "updatedAt": {
               "name": "updatedAt",
               "isArray": false,
               "type": "AWSDateTime",
               "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
+              "attributes": []
             }
           },
           "syncable": true,

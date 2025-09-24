@@ -14,6 +14,8 @@ import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
 import type { Schema } from '../../amplify/data/resource';
 import { v4 as uuidv4 } from 'uuid';
+import { toJSTISOString } from '../utils/uty';
+
 const client = generateClient<Schema>();
 
 // Amplify生成型を使用
@@ -91,7 +93,8 @@ const GreenhouseSetup = () => {
                 userId: currentUserId,
                 greenhouseId,
                 greenhouseName: name.trim(),
-                createdAt: new Date().toISOString()
+                createdAt: toJSTISOString(new Date()),
+                updatedAt: toJSTISOString(new Date())
             });
 
             // 登録後、新しく登録したセンサーの状態を表示するSensorDashboardに遷移

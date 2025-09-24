@@ -1,4 +1,5 @@
 import type { Handler } from 'aws-lambda';
+import { toJSTISOString } from '../../../src/utils/uty';
 
 export const handler: Handler = async (event) => {
   try {
@@ -28,7 +29,7 @@ export const handler: Handler = async (event) => {
 
     // 簡単なデータ処理のシミュレーション
     const processedData = {
-      timestamp: new Date().toISOString(),
+      timestamp: toJSTISOString(new Date()),
       eventType: eventType,
       recordCount: event.Records ? event.Records.length : 0,
       message: 'DynamoDB change processed successfully'
@@ -55,7 +56,7 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify({
         message: 'Error processing request',
         error: error instanceof Error ? error.message : 'Unknown error',
-        timestamp: new Date().toISOString()
+        timestamp: toJSTISOString(new Date())
       }),
     };
   }
