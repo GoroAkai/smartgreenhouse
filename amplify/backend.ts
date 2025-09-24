@@ -1,6 +1,6 @@
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
-import { data } from './data/resource';
+import { data } from './data/resources';
 // import { fetchLatestSensorData } from './functions/fetch-latest-sensor-data/resource';
 
 /**
