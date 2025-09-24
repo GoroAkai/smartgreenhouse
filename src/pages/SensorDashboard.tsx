@@ -13,6 +13,7 @@ import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
 import type { Schema } from '../../amplify/data/resource';
 import SensorCard from '../components/SensorCard';
+import SensorDataChart from '../components/SensorDataChart';
 import { SensorReading, SensorType } from '../types/sensor';
 
 const client = generateClient<Schema>();
@@ -32,6 +33,13 @@ const SensorDashboard = () => {
     const [sensorData, setSensorData] = useState<SensorData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    // グラフ表示用の状態
+    const [chartModalOpen, setChartModalOpen] = useState(false);
+    const [chartData, setChartData] = useState<SensorData[]>([]);
+    const [chartLoading, setChartLoading] = useState(false);
+    const [selectedSensorId, setSelectedSensorId] = useState<string>('');
+    const [selectedDataType, setSelectedDataType] = useState<'temperature' | 'moisture' | 'ec' | 'co2' | 'solar'>('temperature');
 
     useEffect(() => {
         const fetchSensorData = async () => {
@@ -76,10 +84,9 @@ const SensorDashboard = () => {
                 // 各センサーIDの最新データを効率的に取得
                 const sensorDataPromises = allSensorIds.map(async (sensorId) => {
                     try {
-                        // GSIを使用してセンサーIDで検索し、timestampで降順ソートして最新の1件のみ取得
+                        // GSIを使用してセンサーIDで検索し、最新の1件のみ取得
                         const { data: sensorReadings } = await client.models.SensorData.listSensorDataBySensorIdAndTimestamp({
                             sensorId: sensorId,
-                            sortDirection: 'DESC',
                             limit: 1,
                             filter: {
                                 greenhouseId: { eq: greenhouse.id }
@@ -133,6 +140,44 @@ const SensorDashboard = () => {
         fetchSensorData();
     }, [greenhouse?.id]);
 
+    // グラフ用データ取得関数
+    const fetchChartData = async (sensorId: string, dataType: 'temperature' | 'moisture' | 'ec' | 'co2' | 'solar') => {
+        setChartLoading(true);
+        try {
+            // 過去30件のデータを取得
+            const { data: historicalData } = await client.models.SensorData.list({
+                filter: {
+                    sensorId: { eq: sensorId },
+                    greenhouseId: { eq: greenhouse.id }
+                },
+                limit: 30
+            });
+
+            if (historicalData) {
+                // timestampで降順ソート（新しい順）
+                const sortedData = historicalData
+                    .filter(item => item && item.timestamp)
+                    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+                    .slice(0, 30); // 最新30件に制限
+
+                setChartData(sortedData);
+            }
+        } catch (error) {
+            console.error('グラフデータの取得に失敗しました:', error);
+            setChartData([]);
+        } finally {
+            setChartLoading(false);
+        }
+    };
+
+    // センサーデータクリックハンドラー
+    const handleSensorDataClick = (sensorId: string, dataType: 'temperature' | 'moisture' | 'ec' | 'co2' | 'solar') => {
+        setSelectedSensorId(sensorId);
+        setSelectedDataType(dataType);
+        setChartModalOpen(true);
+        fetchChartData(sensorId, dataType);
+    };
+
     // センサーデータを表示用の形式に変換
     const createSensorReading = (value: number, unit: string, timestamp: string, type: SensorType): SensorReading => ({
         type,
@@ -185,54 +230,84 @@ const SensorDashboard = () => {
 
                         // 土壌センサーデータ
                         if (sensor.sensorType === 'soil') {
-                            if (sensor.temperature !== undefined) {
+                            if (sensor.temperature !== null && sensor.temperature !== undefined) {
                                 sensorCards.push(
-                                    <SensorCard
+                                    <Box
                                         key={`${sensor.sensorId}-temperature`}
-                                        label="土壌温度"
-                                        reading={createSensorReading(sensor.temperature, '°C', sensor.timestamp, 'soil' as SensorType)}
-                                    />
+                                        cursor="pointer"
+                                        onClick={() => handleSensorDataClick(sensor.sensorId, 'temperature')}
+                                        _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
+                                    >
+                                        <SensorCard
+                                            label="土壌温度"
+                                            reading={createSensorReading(sensor.temperature, '°C', sensor.timestamp, 'soil' as SensorType)}
+                                        />
+                                    </Box>
                                 );
                             }
-                            if (sensor.moisture !== undefined) {
+                            if (sensor.moisture !== null && sensor.moisture !== undefined) {
                                 sensorCards.push(
-                                    <SensorCard
+                                    <Box
                                         key={`${sensor.sensorId}-moisture`}
-                                        label="水分率"
-                                        reading={createSensorReading(sensor.moisture, '%', sensor.timestamp, 'soil' as SensorType)}
-                                    />
+                                        cursor="pointer"
+                                        onClick={() => handleSensorDataClick(sensor.sensorId, 'moisture')}
+                                        _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
+                                    >
+                                        <SensorCard
+                                            label="水分率"
+                                            reading={createSensorReading(sensor.moisture, '%', sensor.timestamp, 'soil' as SensorType)}
+                                        />
+                                    </Box>
                                 );
                             }
-                            if (sensor.ec !== undefined) {
+                            if (sensor.ec !== null && sensor.ec !== undefined) {
                                 sensorCards.push(
-                                    <SensorCard
+                                    <Box
                                         key={`${sensor.sensorId}-ec`}
-                                        label="電気伝導率"
-                                        reading={createSensorReading(sensor.ec, 'mS/cm', sensor.timestamp, 'soil' as SensorType)}
-                                    />
+                                        cursor="pointer"
+                                        onClick={() => handleSensorDataClick(sensor.sensorId, 'ec')}
+                                        _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
+                                    >
+                                        <SensorCard
+                                            label="電気伝導率"
+                                            reading={createSensorReading(sensor.ec, 'mS/cm', sensor.timestamp, 'soil' as SensorType)}
+                                        />
+                                    </Box>
                                 );
                             }
                         }
 
                         // CO2センサーデータ
-                        if (sensor.sensorType === 'co2' && sensor.co2 !== undefined) {
+                        if (sensor.sensorType === 'co2' && sensor.co2 !== null && sensor.co2 !== undefined) {
                             sensorCards.push(
-                                <SensorCard
+                                <Box
                                     key={`${sensor.sensorId}-co2`}
-                                    label="CO₂濃度"
-                                    reading={createSensorReading(sensor.co2, 'ppm', sensor.timestamp, 'co2' as SensorType)}
-                                />
+                                    cursor="pointer"
+                                    onClick={() => handleSensorDataClick(sensor.sensorId, 'co2')}
+                                    _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
+                                >
+                                    <SensorCard
+                                        label="CO₂濃度"
+                                        reading={createSensorReading(sensor.co2, 'ppm', sensor.timestamp, 'co2' as SensorType)}
+                                    />
+                                </Box>
                             );
                         }
 
                         // 日射量センサーデータ
-                        if (sensor.sensorType === 'solar' && sensor.solar !== undefined) {
+                        if (sensor.sensorType === 'solar' && sensor.solar !== null && sensor.solar !== undefined) {
                             sensorCards.push(
-                                <SensorCard
+                                <Box
                                     key={`${sensor.sensorId}-solar`}
-                                    label="日射量"
-                                    reading={createSensorReading(sensor.solar, 'W/m²', sensor.timestamp, 'sunlight' as SensorType)}
-                                />
+                                    cursor="pointer"
+                                    onClick={() => handleSensorDataClick(sensor.sensorId, 'solar')}
+                                    _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
+                                >
+                                    <SensorCard
+                                        label="日射量"
+                                        reading={createSensorReading(sensor.solar, 'W/m²', sensor.timestamp, 'sunlight' as SensorType)}
+                                    />
+                                </Box>
                             );
                         }
 
@@ -240,6 +315,16 @@ const SensorDashboard = () => {
                     }).flat()}
                 </SimpleGrid>
             )}
+
+            {/* グラフ表示ダイアログ */}
+            <SensorDataChart
+                isOpen={chartModalOpen}
+                onClose={() => setChartModalOpen(false)}
+                sensorId={selectedSensorId}
+                dataType={selectedDataType}
+                chartData={chartData}
+                loading={chartLoading}
+            />
         </Box>
     );
 };
