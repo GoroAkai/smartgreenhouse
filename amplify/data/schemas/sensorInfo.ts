@@ -9,8 +9,6 @@ export const sensorInfoModel = a
         description: a.string(), // センサーの説明（オプション）
         location: a.string(), // 設置場所（オプション）
         isActive: a.boolean().default(true), // アクティブ状態
-        createdAt: a.datetime(),
-        updatedAt: a.datetime(),
     })
     .identifier(['sensorId'])
     .secondaryIndexes((index) => [

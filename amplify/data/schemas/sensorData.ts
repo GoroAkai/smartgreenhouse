@@ -11,8 +11,6 @@ export const sensorDataModel = a
         ec: a.float(),
         co2: a.float(),
         solar: a.float(),
-        createdAt: a.datetime(),
-        updatedAt: a.datetime(),
     })
     .identifier(['sensorId', 'timestamp'])
     .secondaryIndexes((index) => [
