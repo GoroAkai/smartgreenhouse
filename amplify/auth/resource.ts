@@ -8,4 +8,11 @@ export const auth = defineAuth({
   loginWith: {
     email: true,
   },
+  userAttributes: {
+    email: {
+      required: true,
+    },
+  },
+  // メール設定をカスタマイズ
+  accountRecovery: 'EMAIL_ONLY',
 });
