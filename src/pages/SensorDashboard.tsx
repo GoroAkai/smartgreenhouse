@@ -87,6 +87,7 @@ const SensorDashboard = () => {
                         });
 
                         console.log('SensorInfoデータ取得成功:', sensorInfoData);
+                        console.log("sensorInfoData:", sensorInfoData);
                         // センサー情報をMapに変換
                         if (sensorInfoData) {
                             sensorInfoData.forEach(info => {
@@ -252,33 +253,50 @@ const SensorDashboard = () => {
 
     // センサー名更新関数
     const updateSensorName = async (sensorId: string, newName: string) => {
-        // SensorInfoテーブルが存在するかチェック（一時的に無効化）
-        const sensorInfoExists = false; // client.models.SensorInfo !== undefined;
+        // SensorInfoテーブルが存在するかチェック
+        const sensorInfoExists = client.models.SensorInfo !== undefined;
+
+        console.log('SensorInfo存在チェック:', sensorInfoExists);
+        console.log('現在のsensorInfoMap:', sensorInfoMap);
+        console.log('更新対象sensorId:', sensorId);
+        console.log('新しい名前:', newName);
 
         if (sensorInfoExists) {
             try {
                 const existingSensorInfo = sensorInfoMap.get(sensorId);
+                console.log('既存のセンサー情報:', existingSensorInfo);
 
                 if (existingSensorInfo) {
                     // 既存のセンサー情報を更新
-                    await client.models.SensorInfo.update({
+                    console.log('既存レコードを更新中...');
+                    const result = await client.models.SensorInfo.update({
                         sensorId: sensorId,
                         sensorName: newName
                     });
+                    console.log('更新結果:', result);
                 } else {
                     // 新しいセンサー情報を作成
                     const currentSensorData = sensorData.find(sensor => sensor.sensorId === sensorId);
-                    await client.models.SensorInfo.create({
+                    console.log('新しいレコードを作成中...', {
+                        sensorId,
+                        greenhouseId: greenhouse.id,
+                        sensorName: newName,
+                        sensorType: currentSensorData?.sensorType || 'unknown',
+                        isActive: true
+                    });
+                    const result = await client.models.SensorInfo.create({
                         sensorId: sensorId,
                         greenhouseId: greenhouse.id,
                         sensorName: newName,
                         sensorType: currentSensorData?.sensorType || 'unknown',
                         isActive: true
                     });
+                    console.log('作成結果:', result);
                 }
                 console.log(`センサー名をデータベースに保存: ${sensorId} -> ${newName}`);
             } catch (error) {
                 console.error('データベース更新に失敗、ローカル状態のみ更新:', error);
+                console.error('エラー詳細:', error);
             }
         } else {
             console.log('SensorInfoテーブルがまだ利用できません。ローカル状態のみ更新します。');
