@@ -21,8 +21,14 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:sandbox": "npm run env:sandbox && vite",
+    "dev:develop": "npm run env:develop && vite",
+    "dev:production": "npm run env:production && vite",
     "build": "tsc --noEmit --skipLibCheck && vite build",
     "preview": "vite preview",
+    "env:sandbox": "npx ampx sandbox --once",
+    "env:develop": "npx ampx deploy --branch develop",
+    "env:production": "npx ampx deploy --branch main",
     "test": "vitest",
     "deploy": "npx ampx deploy",
     "sandbox": "npx ampx sandbox"
