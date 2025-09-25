@@ -1,4 +1,10 @@
 version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - echo "Amplify Gen 2 backend detected"
+        - npm ci
 frontend:
   phases:
     preBuild:
