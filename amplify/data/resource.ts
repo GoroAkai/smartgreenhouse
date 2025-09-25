@@ -1,3 +1,7 @@
+/**
+ * 下記にbackendについて詳細が載っている
+ * https://docs.amplify.aws/react/build-a-backend/data/set-up-data/
+ */
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { sensorDataModel } from './schemas/sensorData';
 import { userGreenhousesModel } from './schemas/userGreenhouses';
