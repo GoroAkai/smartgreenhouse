@@ -1,6 +1,6 @@
 import { a } from '@aws-amplify/backend';
 
-export const userGreenhousesV2Model = a.model({
+export const userGreenhousesModel = a.model({
     userId: a.string().required(),
     greenhouseId: a.string().required(),
     greenhouseName: a.string(),

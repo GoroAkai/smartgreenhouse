@@ -27,14 +27,14 @@ interface GreenhouseState {
 }
 
 // Amplify生成型を使用
-type SensorData = Schema['SensorDataV2']['type'];
+type SensorData = Schema['SensorData']['type'];
 
 const SensorDashboard = () => {
     const location = useLocation();
     const greenhouse = location.state?.greenhouse as GreenhouseState;
 
     const [sensorData, setSensorData] = useState<SensorData[]>([]);
-    const [sensorInfoMap, setSensorInfoMap] = useState<Map<string, Schema['SensorInfoV2']['type']>>(() => {
+    const [sensorInfoMap, setSensorInfoMap] = useState<Map<string, Schema['SensorInfo']['type']>>(() => {
         // ローカルストレージからセンサー名を復元
         try {
             const stored = localStorage.getItem(`sensorNames_${greenhouse?.id}`);
@@ -75,18 +75,18 @@ const SensorDashboard = () => {
 
                 // センサー情報を取得（テーブルが存在しない場合はスキップ）
                 let infoMap = new Map();
-                console.log('SensorInfoV2テーブルの存在確認:', !!client.models.SensorInfoV2);
+                console.log('SensorInfoテーブルの存在確認:', !!client.models.SensorInfo);
 
-                if (client.models.SensorInfoV2) {
+                if (client.models.SensorInfo) {
                     try {
-                        console.log('SensorInfoV2テーブルからデータを取得中...');
-                        const { data: sensorInfoData } = await client.models.SensorInfoV2.list({
+                        console.log('SensorInfoテーブルからデータを取得中...');
+                        const { data: sensorInfoData } = await client.models.SensorInfo.list({
                             filter: {
                                 greenhouseId: { eq: greenhouse.id }
                             }
                         });
 
-                        console.log('SensorInfoV2データ取得成功:', sensorInfoData);
+                        console.log('SensorInfoデータ取得成功:', sensorInfoData);
                         // センサー情報をMapに変換
                         if (sensorInfoData) {
                             sensorInfoData.forEach(info => {
@@ -96,10 +96,10 @@ const SensorDashboard = () => {
                             });
                         }
                     } catch (sensorInfoError) {
-                        console.error('SensorInfoV2テーブルからのデータ取得に失敗:', sensorInfoError);
+                        console.error('SensorInfoテーブルからのデータ取得に失敗:', sensorInfoError);
                     }
                 } else {
-                    console.log('SensorInfoV2テーブルがまだ作成されていません。ローカルストレージから復元します。');
+                    console.log('SensorInfoテーブルがまだ作成されていません。ローカルストレージから復元します。');
                 }
                 setSensorInfoMap(infoMap);
 
@@ -107,8 +107,8 @@ const SensorDashboard = () => {
                 const user = await getCurrentUser();
                 const userId = user.userId;
 
-                // UserGreenhousesV2テーブルから温室情報とセンサーIDリストを取得
-                const { data: userGreenhouseData } = await client.models.UserGreenhousesV2.get({
+                // UserGreenhousesテーブルから温室情報とセンサーIDリストを取得
+                const { data: userGreenhouseData } = await client.models.UserGreenhouses.get({
                     userId: userId,
                     greenhouseId: greenhouse.id
                 });
@@ -189,7 +189,7 @@ const SensorDashboard = () => {
         setChartLoading(true);
         try {
             // 過去30件のデータを取得
-            const { data: historicalData } = await client.models.SensorDataV2.list({
+            const { data: historicalData } = await client.models.SensorData.list({
                 filter: {
                     sensorId: { eq: sensorId },
                     greenhouseId: { eq: greenhouse.id }
@@ -230,8 +230,8 @@ const SensorDashboard = () => {
             const user = await getCurrentUser();
             const userId = user.userId;
 
-            // UserGreenhousesV2テーブルの温室名を更新
-            await client.models.UserGreenhousesV2.update({
+            // UserGreenhousesテーブルの温室名を更新
+            await client.models.UserGreenhouses.update({
                 userId: userId,
                 greenhouseId: greenhouse.id,
                 greenhouseName: editedName.trim()
@@ -252,8 +252,8 @@ const SensorDashboard = () => {
 
     // センサー名更新関数
     const updateSensorName = async (sensorId: string, newName: string) => {
-        // SensorInfoV2テーブルが存在するかチェック（一時的に無効化）
-        const sensorInfoExists = false; // client.models.SensorInfoV2 !== undefined;
+        // SensorInfoテーブルが存在するかチェック（一時的に無効化）
+        const sensorInfoExists = false; // client.models.SensorInfo !== undefined;
 
         if (sensorInfoExists) {
             try {
@@ -261,14 +261,14 @@ const SensorDashboard = () => {
 
                 if (existingSensorInfo) {
                     // 既存のセンサー情報を更新
-                    await client.models.SensorInfoV2.update({
+                    await client.models.SensorInfo.update({
                         sensorId: sensorId,
                         sensorName: newName
                     });
                 } else {
                     // 新しいセンサー情報を作成
                     const currentSensorData = sensorData.find(sensor => sensor.sensorId === sensorId);
-                    await client.models.SensorInfoV2.create({
+                    await client.models.SensorInfo.create({
                         sensorId: sensorId,
                         greenhouseId: greenhouse.id,
                         sensorName: newName,

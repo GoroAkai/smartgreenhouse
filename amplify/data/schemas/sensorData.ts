@@ -1,6 +1,6 @@
 import { a } from '@aws-amplify/backend';
 
-export const sensorDataV2Model = a
+export const sensorDataModel = a
     .model({
         sensorId: a.string().required(),
         timestamp: a.string().required(),
