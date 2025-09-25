@@ -27,8 +27,8 @@
     "build": "tsc --noEmit --skipLibCheck && vite build",
     "preview": "vite preview",
     "env:sandbox": "npx ampx sandbox --once",
-    "env:develop": "npx ampx deploy --branch develop",
-    "env:production": "npx ampx deploy --branch main",
+    "env:develop": "echo 'develop環境はGitHubプッシュでデプロイされます'",
+    "env:production": "echo 'main環境はGitHubプッシュでデプロイされます'",
     "test": "vitest",
     "deploy": "npx ampx deploy",
     "sandbox": "npx ampx sandbox"
