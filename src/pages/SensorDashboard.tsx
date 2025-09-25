@@ -136,7 +136,7 @@ const SensorDashboard = () => {
                 const sensorDataPromises = allSensorIds.map(async (sensorId) => {
                     try {
                         // 通常のlistメソッドを使用（GSIの問題を回避）
-                        const { data: sensorReadings } = await client.models.SensorData.list({
+                        const { data: sensorReadings } = await client.models.SensorDataV2.list({
                             filter: {
                                 sensorId: { eq: sensorId },
                                 greenhouseId: { eq: greenhouse.id }

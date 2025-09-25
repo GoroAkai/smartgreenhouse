@@ -4,9 +4,9 @@ import { userGreenhousesModel } from './schemas/userGreenhouses';
 import { sensorInfoModel } from './schemas/sensorInfo';
 
 const schema = a.schema({
-    SensorData: sensorDataModel,
-    UserGreenhouses: userGreenhousesModel,
-    SensorInfo: sensorInfoModel,
+    SensorDataV2: sensorDataModel,
+    UserGreenhousesV2: userGreenhousesModel,
+    SensorInfoV2: sensorInfoModel,
 });
 
 export type Schema = ClientSchema<typeof schema>;
