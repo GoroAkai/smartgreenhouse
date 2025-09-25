@@ -1,9 +1,7 @@
 import { a } from '@aws-amplify/backend';
 
-export const sensorDataModel = a
+export const sensorDataV2Model = a
     .model({
-        // テーブル名を明示的に指定して競合を回避
-        tableName: 'SensorDataV2',
         sensorId: a.string().required(),
         timestamp: a.string().required(),
         greenhouseId: a.string().required(),

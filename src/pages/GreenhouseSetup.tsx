@@ -19,7 +19,7 @@ import { toJSTISOString } from '../utils/uty';
 const client = generateClient<Schema>();
 
 // Amplify生成型を使用
-type Greenhouse = Schema['UserGreenhouses']['type'];
+type Greenhouse = Schema['UserGreenhousesV2']['type'];
 
 const GreenhouseSetup = () => {
     const [name, setName] = useState('');
@@ -40,8 +40,8 @@ const GreenhouseSetup = () => {
                 const userId = user.userId;
                 setCurrentUserId(userId);
 
-                // DynamoDB UserGreenhousesテーブルからユーザーの登録した温室一覧を取得
-                const { data: userGreenhouses } = await client.models.UserGreenhouses.list({
+                // DynamoDB UserGreenhousesV2テーブルからユーザーの登録した温室一覧を取得
+                const { data: userGreenhouses } = await client.models.UserGreenhousesV2.list({
                     filter: {
                         userId: {
                             eq: userId
@@ -88,8 +88,8 @@ const GreenhouseSetup = () => {
         try {
             const greenhouseId = uuidv4(); // 新しい温室IDを生成
 
-            // UserGreenhousesテーブルに新しい温室を保存
-            await client.models.UserGreenhouses.create({
+            // UserGreenhousesV2テーブルに新しい温室を保存
+            await client.models.UserGreenhousesV2.create({
                 userId: currentUserId,
                 greenhouseId,
                 greenhouseName: name.trim(),

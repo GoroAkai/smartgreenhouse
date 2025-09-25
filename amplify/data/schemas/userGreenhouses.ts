@@ -1,7 +1,6 @@
 import { a } from '@aws-amplify/backend';
-export const userGreenhousesModel = a.model({
-    // テーブル名を明示的に指定して競合を回避
-    tableName: 'UserGreenhousesV2',
+
+export const userGreenhousesV2Model = a.model({
     userId: a.string().required(),
     greenhouseId: a.string().required(),
     greenhouseName: a.string(),

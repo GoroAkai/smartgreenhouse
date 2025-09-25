@@ -22,7 +22,7 @@ import {
 } from 'recharts';
 import { type Schema } from '../../amplify/data/resource';
 
-type SensorData = Schema['SensorData']['type'];
+type SensorData = Schema['SensorDataV2']['type'];
 
 interface SensorDataChartProps {
     isOpen: boolean;
