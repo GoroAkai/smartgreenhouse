@@ -1,7 +1,6 @@
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
 import { data } from './data/resource';
-// import { fetchLatestSensorData } from './functions/fetch-latest-sensor-data/resource';
 
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
@@ -9,7 +8,6 @@ import { data } from './data/resource';
 export const backend = defineBackend({
   auth,
   data,
-  // fetchLatestSensorData,
 });
 const { cfnUserPool } = backend.auth.resources.cfnResources;
 
@@ -24,14 +22,10 @@ cfnUserPool.policies = {
   },
 };
 
-// メールテンプレートを日本語にカスタマイズ
+// シンプルなメールテンプレート
 cfnUserPool.verificationMessageTemplate = {
   emailSubject: 'アカウント確認コード - スマート温室管理システム',
-  emailMessage:
-    'スマート温室管理システムへのご登録ありがとうございます。\r\n' +
-    'アカウントの確認コードは以下の通りです：\r\n' +
-    '{####}\r\n' +
-    'このコードを"確認コード"の欄に入力してアカウントの確認を完了してください。',
+  emailMessage: 'スマート温室管理システムへのご登録ありがとうございます。<br><br>アカウントの確認コードは【{####}】です。 <br>この6桁の数字をアプリの「確認コード」欄に入力してください。<br><br>スマート温室管理システム チーム',
   defaultEmailOption: 'CONFIRM_WITH_CODE',
 };
 
