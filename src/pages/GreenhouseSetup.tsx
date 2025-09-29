@@ -11,7 +11,7 @@ import {
     Heading
 } from '@chakra-ui/react';
 import { generateClient } from 'aws-amplify/data';
-import { getCurrentUser } from 'aws-amplify/auth';
+import { getCurrentUser, signOut, deleteUser } from 'aws-amplify/auth';
 import type { Schema } from '../../amplify/data/resource';
 import { v4 as uuidv4 } from 'uuid';
 import { toJSTISOString } from '../utils/uty';
@@ -26,10 +26,39 @@ const GreenhouseSetup = () => {
     const [greenhouses, setGreenhouses] = useState<Greenhouse[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [signingOut, setSigningOut] = useState(false);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    // ユーザーの温室データを取得
+    // サインアウト処理
+    const handleSignOut = async () => {
+        try {
+            setSigningOut(true);
+            await signOut();
+            navigate('/'); // サインイン画面へ遷移
+        } catch (err) {
+            console.error('サインアウトに失敗:', err);
+            setError('サインアウトに失敗しました');
+        } finally {
+            setSigningOut(false);
+        }
+    };
+    // アカウント削除処理
+    const handleDeleteAccount = async () => {
+        if (!confirm('本当にアカウントを削除しますか？この操作は元に戻せません。')) return;
+        try {
+            setSigningOut(true);
+            await deleteUser();
+            // 念のためサインアウトしてセッションをクリア
+            try { await signOut(); } catch (_) { /* ignore */ }
+            navigate('/'); // サインイン画面へ遷移
+        } catch (err) {
+            console.error('アカウント削除に失敗:', err);
+            setError('アカウント削除に失敗しました');
+        } finally {
+            setSigningOut(false);
+        }
+    };    // ユーザーの温室データを取得
     useEffect(() => {
         const fetchUserGreenhouses = async () => {
             try {
@@ -145,6 +174,27 @@ const GreenhouseSetup = () => {
 
     return (
         <VStack gap={10} mt={10}>
+            {/* 右上にサインアウトボタン */}
+            <Box width="100%" display="flex" justifyContent="flex-end">
+                <Button
+                    colorScheme="red"
+                    variant="ghost"
+                    onClick={handleSignOut}
+                    isLoading={signingOut}
+                >
+                    サインアウト
+                </Button>
+            </Box>
+            <Box width="100%" display="flex" justifyContent="flex-end">
+                <Button
+                    colorScheme="red"
+                    variant="solid"
+                    onClick={handleDeleteAccount}
+                    isLoading={signingOut}
+                >
+                    アカウント削除
+                </Button>
+            </Box>
             {greenhouses.length > 0 ? (
                 // 既存の温室がある場合：リスト表示
                 <>
