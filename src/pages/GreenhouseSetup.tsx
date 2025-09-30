@@ -180,7 +180,7 @@ const GreenhouseSetup = () => {
                     colorScheme="red"
                     variant="ghost"
                     onClick={handleSignOut}
-                    isLoading={signingOut}
+                    loading={signingOut}
                 >
                     サインアウト
                 </Button>
@@ -190,7 +190,7 @@ const GreenhouseSetup = () => {
                     colorScheme="red"
                     variant="solid"
                     onClick={handleDeleteAccount}
-                    isLoading={signingOut}
+                    loading={signingOut}
                 >
                     アカウント削除
                 </Button>
