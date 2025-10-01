@@ -28,7 +28,6 @@ const getEnvironmentSuffix = () => {
 export const backend = defineBackend({
   auth,
   data,
-  env: 'dev', // ← ここで環境名を指定
 });
 
 const { cfnUserPool } = backend.auth.resources.cfnResources;
