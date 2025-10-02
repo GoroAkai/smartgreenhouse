@@ -1,7 +1,6 @@
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
 import { data } from './data/resource';
-import { getEnvironmentSuffix } from '../src/utils/uty';
 
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
@@ -17,10 +16,7 @@ const tables = backend.data.resources.tables;
 
 // 環境サフィックスをログ出力
 console.log(`Available tables:`, Object.keys(tables));
-const environmentSuffix = getEnvironmentSuffix();
 console.log('AWS_BRANCH:', process.env.AWS_BRANCH);
-
-console.log(`Determined environment suffix: ${environmentSuffix}`);
 
 // パスワードポリシーを変更
 cfnUserPool.policies = {
