@@ -1,26 +1,7 @@
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
 import { data } from './data/resource';
-
-// 環境に応じたサフィックスを決定
-const getEnvironmentSuffix = () => {
-  const branch = process.env.AWS_BRANCH;
-  console.log('🔍 Environment variables:');
-  console.log('  AWS_BRANCH:', branch);
-  console.log('  NODE_ENV:', process.env.NODE_ENV);
-  console.log('  All env vars:', Object.keys(process.env).filter(key => key.startsWith('AWS_')));
-
-  if (!branch) return 'LOCAL'; // サンドボックス環境
-
-  switch (branch) {
-    case 'develop':
-      return 'DEV';
-    case 'main':
-      return 'PROD';
-    default:
-      return branch.toUpperCase();
-  }
-};
+import { getEnvironmentSuffix } from '../src/utils/uty';
 
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
@@ -32,18 +13,14 @@ export const backend = defineBackend({
 
 const { cfnUserPool } = backend.auth.resources.cfnResources;
 
-// DynamoDBテーブル名をカスタマイズ
-const environmentSuffix = getEnvironmentSuffix();
-console.log(`Environment: ${process.env.AWS_BRANCH || 'sandbox'}, Suffix: ${environmentSuffix}`);
-
 const tables = backend.data.resources.tables;
 
-// 環境サフィックスをログ出力（テーブル名変更は一旦無効化）
-console.log(`Environment suffix will be: ${environmentSuffix}`);
+// 環境サフィックスをログ出力
 console.log(`Available tables:`, Object.keys(tables));
+const environmentSuffix = getEnvironmentSuffix();
+console.log('AWS_BRANCH:', process.env.AWS_BRANCH);
 
-// TODO: テーブル名のカスタマイズは後で実装
-// 現在はデフォルトの命名規則を使用
+console.log(`Determined environment suffix: ${environmentSuffix}`);
 
 // パスワードポリシーを変更
 cfnUserPool.policies = {

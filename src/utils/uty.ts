@@ -12,3 +12,17 @@ export const toJSTISOString = (date: Date): string => {
 
     return `${year}-${month}-${day}T${hour}:${minute}:${second}+09:00`;
 };
+
+export const getEnvironmentSuffix = () => {
+    const branch = process.env.AWS_BRANCH;
+    console.log("uty - AWS_BRANCH:", branch);
+    if (!branch) return 'LOCAL';
+    switch (branch) {
+        case 'develop':
+            return 'DEV';
+        case 'main':
+            return 'PROD';
+        default:
+            return branch.toUpperCase();
+    }
+};
