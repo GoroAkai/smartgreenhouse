@@ -1,9 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  Environment:
+    Type: String
+    Default: develop
+    Description: Environment name (develop, prod, etc.)
 Resources:
   SensorDataTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub  "SensorData-${AWS::StackName}"
+      TableName: !Sub "SensorData-${Environment}"
       AttributeDefinitions:
         - AttributeName: sensorId
           AttributeType: S
@@ -19,7 +24,7 @@ Resources:
   UserGreenhousesTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub "UserGreenhouses-${AWS::StackName}"
+      TableName: !Sub "UserGreenhouses-${Environment}"
       AttributeDefinitions:
         - AttributeName: userId
           AttributeType: S
@@ -35,7 +40,7 @@ Resources:
   SensorInfoTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub SensorInfo-${AWS::StackName}
+      TableName: !Sub "SensorInfo-${Environment}"
       AttributeDefinitions:
         - AttributeName: sensorId
           AttributeType: S
