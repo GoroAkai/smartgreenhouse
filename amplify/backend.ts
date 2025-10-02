@@ -2,6 +2,27 @@ import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
 import { data } from './data/resource';
 
+
+// 環境に応じたサフィックスを決定
+const getEnvironmentSuffix = () => {
+  const branch = process.env.AWS_BRANCH;
+  console.log('🔍 Environment variables:');
+  console.log('  AWS_BRANCH:', branch);
+  console.log('  NODE_ENV:', process.env.NODE_ENV);
+  console.log('  All env vars:', Object.keys(process.env).filter(key => key.startsWith('AWS_')));
+
+  if (!branch) return 'LOCAL'; // サンドボックス環境
+
+  switch (branch) {
+    case 'develop':
+      return 'DEV';
+    case 'main':
+      return 'PROD';
+    default:
+      return branch.toUpperCase();
+  }
+};
+
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
  */
@@ -17,6 +38,10 @@ const tables = backend.data.resources.tables;
 // 環境サフィックスをログ出力
 console.log(`Available tables:`, Object.keys(tables));
 console.log('AWS_BRANCH:', process.env.AWS_BRANCH);
+
+// DynamoDBテーブル名をカスタマイズ
+const environmentSuffix = getEnvironmentSuffix();
+console.log('Determined environment suffix:', environmentSuffix);
 
 // パスワードポリシーを変更
 cfnUserPool.policies = {

@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "ap-northeast-1_qT9nvfBhq",
+    "user_pool_id": "ap-northeast-1_KuR6A9J12",
     "aws_region": "ap-northeast-1",
-    "user_pool_client_id": "5rd4477sd481k4pm9jfp7f3dl7",
-    "identity_pool_id": "ap-northeast-1:4bb8be4d-6ee0-4260-8383-4cbb1b637c3a",
+    "user_pool_client_id": "3e6cg45aa13tj3n1diabta0hrj",
+    "identity_pool_id": "ap-northeast-1:40747833-4091-438f-b916-14625624b776",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -26,9 +26,9 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://libcbypaungxrl5qahlfhcg4ty.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+    "url": "https://23fhl3vfqbdb7oc6nd5qfobexu.appsync-api.ap-northeast-1.amazonaws.com/graphql",
     "aws_region": "ap-northeast-1",
-    "api_key": "da2-eas3c4pxknbndh5ecwdaip264i",
+    "api_key": "da2-l5vkyunesbddvauozkv6vwjxca",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
       "API_KEY",
@@ -37,8 +37,8 @@
     "model_introspection": {
       "version": 1,
       "models": {
-        "SensorData": {
-          "name": "SensorData",
+        "SensorDatav2": {
+          "name": "SensorDatav2",
           "fields": {
             "sensorId": {
               "name": "sensorId",
@@ -121,7 +121,7 @@
             }
           },
           "syncable": true,
-          "pluralName": "SensorData",
+          "pluralName": "SensorDatav2s",
           "attributes": [
             {
               "type": "model",
@@ -140,7 +140,7 @@
               "type": "key",
               "properties": {
                 "name": "bySensorIdAndTimestamp",
-                "queryField": "listSensorDataBySensorIdAndTimestamp",
+                "queryField": "listSensorDatav2BySensorIdAndTimestamp",
                 "fields": [
                   "sensorId",
                   "timestamp"
@@ -151,7 +151,7 @@
               "type": "key",
               "properties": {
                 "name": "byGreenhouseIdAndTimestamp",
-                "queryField": "listSensorDataByGreenhouseIdAndTimestamp",
+                "queryField": "listSensorDatav2ByGreenhouseIdAndTimestamp",
                 "fields": [
                   "greenhouseId",
                   "timestamp"
@@ -193,8 +193,8 @@
             ]
           }
         },
-        "UserGreenhouses": {
-          "name": "UserGreenhouses",
+        "UserGreenhousesv2": {
+          "name": "UserGreenhousesv2",
           "fields": {
             "userId": {
               "name": "userId",
@@ -257,7 +257,7 @@
             }
           },
           "syncable": true,
-          "pluralName": "UserGreenhouses",
+          "pluralName": "UserGreenhousesv2s",
           "attributes": [
             {
               "type": "model",
@@ -307,8 +307,8 @@
             ]
           }
         },
-        "SensorInfo": {
-          "name": "SensorInfo",
+        "SensorInfov2": {
+          "name": "SensorInfov2",
           "fields": {
             "sensorId": {
               "name": "sensorId",
@@ -377,7 +377,7 @@
             }
           },
           "syncable": true,
-          "pluralName": "SensorInfos",
+          "pluralName": "SensorInfov2s",
           "attributes": [
             {
               "type": "model",
@@ -395,7 +395,7 @@
               "type": "key",
               "properties": {
                 "name": "byGreenhouseId",
-                "queryField": "listSensorInfoByGreenhouseId",
+                "queryField": "listSensorInfov2ByGreenhouseId",
                 "fields": [
                   "greenhouseId"
                 ]
