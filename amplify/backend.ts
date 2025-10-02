@@ -3,46 +3,63 @@ import { auth } from './auth/resource';
 import { data } from './data/resource';
 
 
-// 環境に応じたサフィックスを決定
-const getEnvironmentSuffix = () => {
-  const branch = process.env.AWS_BRANCH;
-  console.log('🔍 Environment variables:');
-  console.log('  AWS_BRANCH:', branch);
-  console.log('  NODE_ENV:', process.env.NODE_ENV);
-  console.log('  All env vars:', Object.keys(process.env).filter(key => key.startsWith('AWS_')));
+// // 環境に応じたサフィックスを決定
+// const getEnvironmentSuffix = () => {
+//   const branch = process.env.AWS_BRANCH;
+//   console.log('🔍 Environment variables:');
+//   console.log('  AWS_BRANCH:', branch);
+//   console.log('  NODE_ENV:', process.env.NODE_ENV);
+//   console.log('  All env vars:', Object.keys(process.env).filter(key => key.startsWith('AWS_')));
 
-  if (!branch) return 'LOCAL'; // サンドボックス環境
+//   if (!branch) return 'LOCAL'; // サンドボックス環境
 
-  switch (branch) {
-    case 'develop':
-      return 'DEV';
-    case 'main':
-      return 'PROD';
-    default:
-      return branch.toUpperCase();
-  }
-};
+//   switch (branch) {
+//     case 'develop':
+//       return 'DEV';
+//     case 'main':
+//       return 'PROD';
+//     default:
+//       return branch.toUpperCase();
+//   }
+// };
 
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
  */
 export const backend = defineBackend({
   auth,
-  data,
+  // data,
 });
 
 const { cfnUserPool } = backend.auth.resources.cfnResources;
 
-const tables = backend.data.resources.tables;
+// const tables = backend.data.resources.tables;
 
-// 環境サフィックスをログ出力
-console.log(`Available tables:`, Object.keys(tables));
-console.log('AWS_BRANCH:', process.env.AWS_BRANCH);
+// // 環境サフィックスをログ出力
+// console.log(`Available tables:`, Object.keys(tables));
+// console.log('AWS_BRANCH:', process.env.AWS_BRANCH);
 
-// DynamoDBテーブル名をカスタマイズ
-const environmentSuffix = getEnvironmentSuffix();
-console.log('Determined environment suffix:', environmentSuffix);
-
+// // DynamoDBテーブル名をカスタマイズ
+// const environmentSuffix = getEnvironmentSuffix();
+// console.log('Determined environment suffix:', environmentSuffix);
+// 最小対応：backend.data.resources.tables に明示的にサフィックスを付与しておく
+// (Amplify の内部挙動で NONE が入ることがあるため、ここで上書きして確実に反映させる)
+// if (environmentSuffix && environmentSuffix !== 'NONE') {
+//   try {
+//     Object.entries(tables).forEach(([logicalName, table]: any) => {
+//       const base = table?.name ?? table?.tableName ?? logicalName;
+//       const suffixed = `${base}-${environmentSuffix}`;
+//       // 保険として両方のプロパティを設定しておく
+//       if (table) {
+//         table.name = suffixed;
+//         table.tableName = suffixed;
+//       }
+//     });
+//     console.log('Applied environment suffix to tables.');
+//   } catch (e) {
+//     console.warn('Failed to apply environment suffix to tables:', e);
+//   }
+// }
 // パスワードポリシーを変更
 cfnUserPool.policies = {
   passwordPolicy: {

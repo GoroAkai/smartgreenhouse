@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  SensorDataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub  "SensorData-${AWS::StackName}"
+      AttributeDefinitions:
+        - AttributeName: sensorId
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: sensorId
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+
+  UserGreenhousesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "UserGreenhouses-${AWS::StackName}"
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: greenhouseId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: greenhouseId
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+
+  SensorInfoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub SensorInfo-${AWS::StackName}
+      AttributeDefinitions:
+        - AttributeName: sensorId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: sensorId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
